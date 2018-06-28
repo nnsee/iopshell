@@ -9,6 +9,7 @@ import (
     "github.com/chzyer/readline"
     "gitlab.com/neonsea/iopshell/internal/setting"
     "gitlab.com/neonsea/iopshell/internal/cmd"
+    "gitlab.com/neonsea/iopshell/internal/connection"
 )
 
 func filterInput(r rune) (rune, bool) {
@@ -19,9 +20,9 @@ func filterInput(r rune) (rune, bool) {
     return r, true
 }
 
-func UpdatePrompt(l *readline.Instance, s setting.Status) {
+func UpdatePrompt(l *readline.Instance, s *setting.Status) {
     var prompt string
-    if !s.Connection {
+    if s.Conn == nil {
         prompt = "\033[91miop\033[0;1m$\033[0m "
     } else {
         if !s.Auth {
@@ -51,8 +52,6 @@ func Shell() {
     defer l.Close()
 
     updateCompleter()
-    
-    log.SetOutput(l.Stderr())
 
     for {
         line, err := l.Readline()

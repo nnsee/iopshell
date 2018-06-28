@@ -1,16 +1,16 @@
 package cmd
 
 import (
-	"fmt"
+    "fmt"
 )
 
 var Test = Command {
-	Name: "test",
-	Usage: "TEST",
-	Description: "Test",
-	Action: Testfunc,
+    Name: "test",
+    Usage: "TEST",
+    Description: "Test",
+    Action: Testfunc,
 }
 
 func Testfunc(param []string) {
-	fmt.Printf("test %s\n", param)
+    fmt.Printf("test %s\n", param)
 }

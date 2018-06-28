@@ -1,28 +1,28 @@
 package cmd
 
 import (
-	"strings"
-	"fmt"
+    "strings"
+    "fmt"
 )
 
 var CommandList = map[string]Command{
-	"test": Test,
+    "test": Test,
 }
 
 type Command struct {
-	Name        string
-	Usage       string
-	Description string
-	Action		func([]string)
-	MinArg      int
-	MaxArg      int
+    Name        string
+    Usage       string
+    Description string
+    Action      func([]string)
+    MinArg      int
+    MaxArg      int
 }
 
 func Usage(cmd *Command) {
-	fmt.Println("Usage: ", cmd.Usage)
+    fmt.Println("Usage: ", cmd.Usage)
 }
 
 func Execute(cmd *Command, line string) {
-	arg := strings.Split(line, " ")[1:]
-	cmd.Action(arg)
+    arg := strings.Split(line, " ")[1:]
+    cmd.Action(arg)
 }
