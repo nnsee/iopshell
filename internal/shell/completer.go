@@ -8,6 +8,8 @@ import (
 var completer = readline.NewPrefixCompleter()
 
 func updateCompleter() {
+    completer.SetChildren(*new([]readline.PrefixCompleterInterface))
+
     commands := make([]string, len(cmd.CommandList))
     i := 0
     for c := range cmd.CommandList {
