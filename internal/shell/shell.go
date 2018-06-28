@@ -6,8 +6,8 @@ import (
     "strings"
 
     "github.com/chzyer/readline"
-    "gitlab.com/neonsea/iopshell/internal/setting"
     "gitlab.com/neonsea/iopshell/internal/cmd"
+    "gitlab.com/neonsea/iopshell/internal/connection"
 )
 
 func filterInput(r rune) (rune, bool) {
@@ -18,15 +18,15 @@ func filterInput(r rune) (rune, bool) {
     return r, true
 }
 
-func UpdatePrompt(l *readline.Instance, s *setting.Status) {
+func UpdatePrompt(l *readline.Instance, c *connection.Connection) {
     var prompt string
-    if s.Conn == nil {
+    if c.C == nil {
         prompt = "\033[91miop\033[0;1m$\033[0m "
     } else {
-        if !s.Auth {
+        if c.User == "" {
             prompt = "\033[32miop\033[0;1m$\033[0m "
         } else {
-            prompt = fmt.Sprintf("\033[32miop\033[0m %s\033[0;1m$\033[0m ", s.Curr_user)
+            prompt = fmt.Sprintf("\033[32miop\033[0m %s\033[0;1m$\033[0m ", c.User)
         }
     }
     l.SetPrompt(prompt)
@@ -49,10 +49,13 @@ func Shell() {
     }
     defer l.Close()
 
+    conn := connection.Connection{}
+
     updateCompleter()
 
     for {
         line, err := l.Readline()
+        UpdatePrompt(l, &conn)
         if err == io.EOF {
             break
         } else if err == readline.ErrInterrupt {
@@ -63,6 +66,8 @@ func Shell() {
         command := strings.Split(line, " ")[0]
         if val, k := cmd.CommandList[command]; k {
             cmd.Execute(&val, line)
+        } else if command == "" {
+            continue
         } else {
             fmt.Printf("Unknown command '%s'\n", line)
         }

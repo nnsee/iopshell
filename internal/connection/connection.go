@@ -15,9 +15,12 @@ var dialer = websocket.Dialer{
 }
 
 type Connection struct {
-    c   *websocket.Conn
-    In  chan interface{}
-    Out chan interface{}
+    C    *websocket.Conn
+    In   chan interface{}
+    Out  chan interface{}
+    Key  string
+    User string
+    Id   int
 }
 
 func (conn *Connection) Connect(addr string) {
@@ -27,16 +30,16 @@ func (conn *Connection) Connect(addr string) {
     if err != nil {
         fmt.Println(err)
     }
-    conn.c = con
+    conn.C = con
 }
 
 func (conn *Connection) Send(request interface{}) {
-    conn.c.WriteJSON(request)
+    conn.C.WriteJSON(request)
 }
 
 func (conn *Connection) Recv() interface{} {
     var response interface{}
-    conn.c.ReadJSON(&response)
+    conn.C.ReadJSON(&response)
     return response
 }
 
