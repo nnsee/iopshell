@@ -3,13 +3,11 @@ package shell
 import (
     "fmt"
     "io"
-    "log"
     "strings"
 
     "github.com/chzyer/readline"
     "gitlab.com/neonsea/iopshell/internal/setting"
     "gitlab.com/neonsea/iopshell/internal/cmd"
-    "gitlab.com/neonsea/iopshell/internal/connection"
 )
 
 func filterInput(r rune) (rune, bool) {
