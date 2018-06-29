@@ -10,6 +10,12 @@ import (
     "gitlab.com/neonsea/iopshell/internal/connection"
 )
 
+type shellVars struct {
+    Conn      *connection.Connection
+    Completer readline.PrefixCompleter
+    Instance  *readline.Instance
+}
+
 func filterInput(r rune) (rune, bool) {
     switch r {
     case readline.CharCtrlZ:
@@ -18,26 +24,27 @@ func filterInput(r rune) (rune, bool) {
     return r, true
 }
 
-func UpdatePrompt(l *readline.Instance, c *connection.Connection) {
+func (s *shellVars) UpdatePrompt() {
     var prompt string
-    if c.C == nil {
+    if s.Conn.C == nil {
         prompt = "\033[91miop\033[0;1m$\033[0m "
     } else {
-        if c.User == "" {
+        if s.Conn.User == "" {
             prompt = "\033[32miop\033[0;1m$\033[0m "
         } else {
-            prompt = fmt.Sprintf("\033[32miop\033[0m %s\033[0;1m$\033[0m ", c.User)
+            prompt = fmt.Sprintf("\033[32miop\033[0m %s\033[0;1m$\033[0m ", s.Conn.User)
         }
     }
-    l.SetPrompt(prompt)
-    l.Refresh()
+    s.Instance.SetPrompt(prompt)
+    s.Instance.Refresh()
 }
+
+var Sv shellVars
 
 func Shell() {
     l, err := readline.NewEx(&readline.Config{
-        Prompt:          "\033[91miop\033[0;1m$\033[0m ",
         HistoryFile:     "/tmp/iop.tmp",
-        AutoComplete:    completer,
+        AutoComplete:    &Sv.Completer,
         InterruptPrompt: "^C",
         EOFPrompt:       "^D",
 
@@ -47,15 +54,15 @@ func Shell() {
     if err != nil {
         panic(err)
     }
+
+    Sv.Instance = l
+    Sv.Conn = new(connection.Connection)
     defer l.Close()
-
-    conn := connection.Connection{}
-
-    updateCompleter()
+    Sv.UpdatePrompt()
+    Sv.UpdateCompleter()
 
     for {
         line, err := l.Readline()
-        UpdatePrompt(l, &conn)
         if err == io.EOF {
             break
         } else if err == readline.ErrInterrupt {

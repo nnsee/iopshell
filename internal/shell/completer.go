@@ -5,10 +5,9 @@ import (
     "gitlab.com/neonsea/iopshell/internal/cmd"
 )
 
-var completer = readline.NewPrefixCompleter()
-
-func updateCompleter() {
-    completer.SetChildren(*new([]readline.PrefixCompleterInterface))
+func (s *shellVars) UpdateCompleter() {
+    s.Completer = *readline.NewPrefixCompleter()
+    s.Completer.SetChildren(*new([]readline.PrefixCompleterInterface))
 
     commands := make([]string, len(cmd.CommandList))
     i := 0
@@ -17,6 +16,6 @@ func updateCompleter() {
         i++
     }
     for _, c := range commands {
-        completer.Children = append(completer.Children, readline.PcItem(c))
+        s.Completer.Children = append(s.Completer.Children, readline.PcItem(c))
     }
 }
