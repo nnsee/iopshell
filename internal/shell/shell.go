@@ -42,20 +42,27 @@ func (s *shellVars) UpdatePrompt() {
 
 var Sv shellVars
 
-func msgHandler() {
+func connectionHandler() {
+    for {
+        cmd := <-setting.Cmd
+        switch cmd[0] {
+        case "connect":
+            Sv.Conn.Connect(cmd[1])
+            Sv.UpdatePrompt()
+        case "disconnect":
+            Sv.Conn.Disconnect()
+            Sv.UpdatePrompt()
+        }
+    }
+}
+
+func msgParser() {
     for {
         select {
-        case cmd := <-setting.Cmd:
-            switch cmd[0] {
-            case "connect":
-                Sv.Conn.Connect(cmd[1])
-                Sv.UpdatePrompt()
-            case "disconnect":
-                Sv.Conn.Disconnect()
-                Sv.UpdatePrompt()
-            }
-        case message := <-setting.In:
-            fmt.Println("Got", message)
+        case input := <-setting.In:
+            fmt.Println("Got", input)
+        case output := <-setting.Out:
+            Sv.Conn.Send(output)
         }
     }
 }
@@ -77,10 +84,12 @@ func Shell() {
     Sv.Instance = l
     Sv.Conn = new(connection.Connection)
     defer l.Close()
+
+    go connectionHandler()
+    go msgParser()
+    
     Sv.UpdatePrompt()
     Sv.UpdateCompleter()
-
-    go msgHandler()
 
     for {
         line, err := l.Readline()

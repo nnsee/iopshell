@@ -32,8 +32,10 @@ func (conn *Connection) Connect(addr string) {
 }
 
 func (conn *Connection) Disconnect() {
-    conn.C.Close()
-    conn.C = nil
+    if conn.C != nil {
+        conn.C.Close()
+        conn.C = nil
+    }
 }
 
 func (conn *Connection) Send(request interface{}) {
