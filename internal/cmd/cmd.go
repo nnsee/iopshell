@@ -7,6 +7,8 @@ import (
 
 var CommandList = map[string]Command{
     "test": Test,
+    "connect": Connect,
+    "disconnect": Disconnect,
 }
 
 type Command struct {

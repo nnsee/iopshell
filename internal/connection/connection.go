@@ -16,8 +16,6 @@ var dialer = websocket.Dialer{
 
 type Connection struct {
     C    *websocket.Conn
-    In   chan interface{}
-    Out  chan interface{}
     Key  string
     User string
     Id   int
@@ -31,6 +29,11 @@ func (conn *Connection) Connect(addr string) {
         fmt.Println(err)
     }
     conn.C = con
+}
+
+func (conn *Connection) Disconnect() {
+    conn.C.Close()
+    conn.C = nil
 }
 
 func (conn *Connection) Send(request interface{}) {

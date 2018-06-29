@@ -8,6 +8,7 @@ import (
     "github.com/chzyer/readline"
     "gitlab.com/neonsea/iopshell/internal/cmd"
     "gitlab.com/neonsea/iopshell/internal/connection"
+    "gitlab.com/neonsea/iopshell/internal/setting"
 )
 
 type shellVars struct {
@@ -41,6 +42,24 @@ func (s *shellVars) UpdatePrompt() {
 
 var Sv shellVars
 
+func msgHandler() {
+    for {
+        select {
+        case cmd := <-setting.Cmd:
+            switch cmd[0] {
+            case "connect":
+                Sv.Conn.Connect(cmd[1])
+                Sv.UpdatePrompt()
+            case "disconnect":
+                Sv.Conn.Disconnect()
+                Sv.UpdatePrompt()
+            }
+        case message := <-setting.In:
+            fmt.Println("Got", message)
+        }
+    }
+}
+
 func Shell() {
     l, err := readline.NewEx(&readline.Config{
         HistoryFile:     "/tmp/iop.tmp",
@@ -60,6 +79,8 @@ func Shell() {
     defer l.Close()
     Sv.UpdatePrompt()
     Sv.UpdateCompleter()
+
+    go msgHandler()
 
     for {
         line, err := l.Readline()
