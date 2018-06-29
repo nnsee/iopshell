@@ -5,10 +5,10 @@ import (
 )
 
 var Test = Command {
-    Name: "test",
-    Usage: "TEST",
+    Name:        "test",
+    UsageText:   "TEST",
     Description: "Test",
-    Action: Testfunc,
+    Action:      Testfunc,
 }
 
 func Testfunc(param []string) {

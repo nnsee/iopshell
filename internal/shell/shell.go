@@ -72,7 +72,7 @@ func Shell() {
         line     = strings.TrimSpace(line)
         command := strings.Split(line, " ")[0]
         if val, k := cmd.CommandList[command]; k {
-            cmd.Execute(&val, line)
+            val.Execute(line)
         } else if command == "" {
             continue
         } else {

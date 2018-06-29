@@ -11,18 +11,18 @@ var CommandList = map[string]Command{
 
 type Command struct {
     Name        string
-    Usage       string
+    UsageText   string
     Description string
     Action      func([]string)
     MinArg      int
     MaxArg      int
 }
 
-func Usage(cmd *Command) {
-    fmt.Println("Usage: ", cmd.Usage)
+func (cmd *Command) Usage() {
+    fmt.Println("Usage: ", cmd.UsageText)
 }
 
-func Execute(cmd *Command, line string) {
+func (cmd *Command) Execute(line string) {
     arg := strings.Split(line, " ")[1:]
     cmd.Action(arg)
 }
