@@ -27,6 +27,7 @@ func connectionHandler() {
         switch cmd[0] {
         case "connect":
             Sv.Conn.Connect(cmd[1])
+            go msgListener()
             Sv.UpdatePrompt()
         case "disconnect":
             Sv.Conn.Disconnect()
@@ -37,12 +38,16 @@ func connectionHandler() {
 
 func msgParser() {
     for {
-        select {
-        case input := <-setting.In:
-            fmt.Println("Got", input)
-        case output := <-setting.Out:
-            Sv.Conn.Send(output)
-        }
+        output := <-setting.Out
+        Sv.Conn.Send(output)
+    }
+}
+
+func msgListener() {
+    for {
+        input := Sv.Conn.Recv()
+        fmt.Println("\nGot", input)
+        Sv.UpdatePrompt()
     }
 }
 

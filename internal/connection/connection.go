@@ -50,8 +50,6 @@ func (c *Connection) Send(request interface{}) {
 
 func (c *Connection) Recv() interface{} {
     var response interface{}
-    if c.Ws != nil {
-        c.Ws.ReadJSON(&response)
-    }
+    c.Ws.ReadJSON(&response)
     return response
 }

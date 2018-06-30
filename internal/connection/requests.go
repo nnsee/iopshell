@@ -15,3 +15,8 @@ func (c *Connection) genUbusRequest(method, path, pmethod string, message map[st
 
     return request
 }
+
+func (c *Connection) Call(path, method string, message map[string]interface{}) {
+    request := c.genUbusRequest("call", path, method, message)
+    c.Send(request)
+}
