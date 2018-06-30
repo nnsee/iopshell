@@ -15,36 +15,35 @@ var dialer = websocket.Dialer{
 }
 
 type Connection struct {
-    C    *websocket.Conn
+    Ws   *websocket.Conn
     Key  string
     User string
     Id   int
 }
 
-func (conn *Connection) Connect(addr string) {
+func (c *Connection) Connect(addr string) {
     u := url.URL{Scheme: "ws", Host: addr, Path: "/"}
 
     con, _, err := dialer.Dial(u.String(), nil)
     if err != nil {
         fmt.Println(err)
     }
-    conn.C = con
+    c.Ws = con
 }
 
-func (conn *Connection) Disconnect() {
-    if conn.C != nil {
-        conn.C.Close()
-        conn.C = nil
+func (c *Connection) Disconnect() {
+    if c.Ws != nil {
+        c.Ws.Close()
+        c.Ws = nil
     }
 }
 
-func (conn *Connection) Send(request interface{}) {
-    conn.C.WriteJSON(request)
+func (c *Connection) Send(request interface{}) {
+    c.Ws.WriteJSON(request)
 }
 
-func (conn *Connection) Recv() interface{} {
+func (c *Connection) Recv() interface{} {
     var response interface{}
-    conn.C.ReadJSON(&response)
+    c.Ws.ReadJSON(&response)
     return response
 }
-

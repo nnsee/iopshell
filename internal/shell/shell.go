@@ -27,7 +27,7 @@ func filterInput(r rune) (rune, bool) {
 
 func (s *shellVars) UpdatePrompt() {
     var prompt string
-    if s.Conn.C == nil {
+    if s.Conn.Ws == nil {
         prompt = "\033[91miop\033[0;1m$\033[0m "
     } else {
         if s.Conn.User == "" {
@@ -87,7 +87,7 @@ func Shell() {
 
     go connectionHandler()
     go msgParser()
-    
+
     Sv.UpdatePrompt()
     Sv.UpdateCompleter()
 
