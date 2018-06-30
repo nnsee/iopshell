@@ -29,6 +29,9 @@ func (c *Connection) Connect(addr string) {
         fmt.Println(err)
     }
     c.Ws = con
+    if c.Key == "" {
+        c.Key = "00000000000000000000000000000000"
+    }
 }
 
 func (c *Connection) Disconnect() {
@@ -39,11 +42,16 @@ func (c *Connection) Disconnect() {
 }
 
 func (c *Connection) Send(request interface{}) {
-    c.Ws.WriteJSON(request)
+    if c.Ws != nil {
+        c.Ws.WriteJSON(request)
+        c.Id++
+    }
 }
 
 func (c *Connection) Recv() interface{} {
     var response interface{}
-    c.Ws.ReadJSON(&response)
+    if c.Ws != nil {
+        c.Ws.ReadJSON(&response)
+    }
     return response
 }

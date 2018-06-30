@@ -5,11 +5,7 @@ import (
     "fmt"
 )
 
-var CommandList = map[string]Command{
-    "test": Test,
-    "connect": Connect,
-    "disconnect": Disconnect,
-}
+var CommandList = make(map[string]Command)
 
 type Command struct {
     Name        string
@@ -18,6 +14,10 @@ type Command struct {
     Action      func([]string)
     MinArg      int // Includes command name. 0 for unlimited
     MaxArg      int // Same as above
+}
+
+func (cmd *Command) Register() {
+    CommandList[cmd.Name] = *cmd
 }
 
 func (cmd *Command) Usage() {

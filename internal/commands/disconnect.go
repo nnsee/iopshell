@@ -1,10 +1,11 @@
-package cmd
+package commands
 
 import (
     "gitlab.com/neonsea/iopshell/internal/setting"
+    "gitlab.com/neonsea/iopshell/internal/cmd"
 )
 
-var Disconnect = Command {
+var Disconnect = cmd.Command {
     Name:        "disconnect",
     UsageText:   "disconnect",
     Description: "Disconnects from the currently connected host",
@@ -14,4 +15,8 @@ var Disconnect = Command {
 
 func disconnect(param []string) {
     setting.Cmd <- []string{"disconnect"}
+}
+
+func init() {
+    Disconnect.Register()
 }

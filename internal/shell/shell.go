@@ -11,12 +11,6 @@ import (
     "gitlab.com/neonsea/iopshell/internal/setting"
 )
 
-type shellVars struct {
-    Conn      *connection.Connection
-    Completer readline.PrefixCompleter
-    Instance  *readline.Instance
-}
-
 func filterInput(r rune) (rune, bool) {
     switch r {
     case readline.CharCtrlZ:
@@ -25,22 +19,7 @@ func filterInput(r rune) (rune, bool) {
     return r, true
 }
 
-func (s *shellVars) UpdatePrompt() {
-    var prompt string
-    if s.Conn.Ws == nil {
-        prompt = "\033[91miop\033[0;1m$\033[0m "
-    } else {
-        if s.Conn.User == "" {
-            prompt = "\033[32miop\033[0;1m$\033[0m "
-        } else {
-            prompt = fmt.Sprintf("\033[32miop\033[0m %s\033[0;1m$\033[0m ", s.Conn.User)
-        }
-    }
-    s.Instance.SetPrompt(prompt)
-    s.Instance.Refresh()
-}
-
-var Sv shellVars
+var Sv = &setting.Vars
 
 func connectionHandler() {
     for {
@@ -89,7 +68,7 @@ func Shell() {
     go msgParser()
 
     Sv.UpdatePrompt()
-    Sv.UpdateCompleter()
+    Sv.UpdateCompleter(cmd.CommandList)
 
     for {
         line, err := l.Readline()

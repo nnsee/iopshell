@@ -1,10 +1,11 @@
-package cmd
+package commands
 
 import (
     "fmt"
+    "gitlab.com/neonsea/iopshell/internal/cmd"
 )
 
-var Test = Command {
+var Test = cmd.Command {
     Name:        "test",
     UsageText:   "TEST",
     Description: "Test",
@@ -13,4 +14,8 @@ var Test = Command {
 
 func Testfunc(param []string) {
     fmt.Printf("test %s\n", param)
+}
+
+func init() {
+    Test.Register()
 }

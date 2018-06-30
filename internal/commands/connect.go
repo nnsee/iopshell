@@ -1,10 +1,11 @@
-package cmd
+package commands
 
 import (
     "gitlab.com/neonsea/iopshell/internal/setting"
+    "gitlab.com/neonsea/iopshell/internal/cmd"
 )
 
-var Connect = Command {
+var Connect = cmd.Command {
     Name:        "connect",
     UsageText:   "connect [host]",
     Description: "Connects to [host]. If none specified, uses values from config",
@@ -20,4 +21,8 @@ func connect(param []string) {
         addr = param[0]
     }
     setting.Cmd <- []string{"connect", addr}
+}
+
+func init() {
+    Connect.Register()
 }
