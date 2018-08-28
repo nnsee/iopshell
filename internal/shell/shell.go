@@ -45,14 +45,25 @@ func msgParser() {
 
 func msgListener() {
 	for Sv.Conn.Ws != nil {
-		input := Sv.Conn.Recv()
-		if input != nil {
-			fmt.Println("\nGot", input)
+		response := Sv.Conn.Recv()
+		if response.Jsonrpc != "" {
+			fmt.Println("\nGot", response)
+			if len(response.Result) > 1 {
+				if key, ok := response.Result[1].(map[string]interface{})["ubus_rpc_session"]; ok {
+					Sv.Conn.Key = key.(string)
+				}
+				if data, ok := response.Result[1].(map[string]interface{})["data"]; ok {
+					if user, ok := data.(map[string]interface{})["username"]; ok {
+						Sv.Conn.User = user.(string)
+					}
+				}
+			}
 			Sv.UpdatePrompt()
 		} else {
 			return
 		}
 	}
+	return
 }
 
 func Shell() {

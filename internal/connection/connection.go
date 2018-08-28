@@ -22,6 +22,12 @@ type Connection struct {
 	Id   int
 }
 
+type response struct {
+	Id      int
+	Result  []interface{}
+	Jsonrpc string
+}
+
 func (c *Connection) Connect(addr string) {
 	u := url.URL{Scheme: "ws", Host: addr, Path: "/"}
 
@@ -50,12 +56,11 @@ func (c *Connection) Send(request interface{}) {
 	}
 }
 
-func (c *Connection) Recv() interface{} {
+func (c *Connection) Recv() response {
 	if c.Ws != nil {
-		var response interface{}
-		c.Ws.ReadJSON(&response)
-		return response
-	} else {
-		return nil
+		var r response
+		c.Ws.ReadJSON(&r)
+		return r
 	}
+	return response{}
 }
