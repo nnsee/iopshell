@@ -1,8 +1,11 @@
 package commands
 
 import (
+	"strings"
+
 	"gitlab.com/neonsea/iopshell/internal/cmd"
 	"gitlab.com/neonsea/iopshell/internal/setting"
+	"gitlab.com/neonsea/iopshell/internal/textmutate"
 )
 
 var Call = cmd.Command{
@@ -18,7 +21,9 @@ func call(param []string) {
 	if len(param) == 2 {
 		setting.Vars.Conn.Call(param[0], param[1], make(map[string]interface{}))
 	} else {
-		setting.Vars.Conn.Call(param[0], param[1], *new(map[string]interface{}))
+		message := strings.Join(param[2:], " ")
+		mmap, _ := textmutate.StrToMap(message)
+		setting.Vars.Conn.Call(param[0], param[1], mmap)
 	}
 }
 
