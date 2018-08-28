@@ -14,7 +14,6 @@ var Call = cmd.Command{
 	Description: "Calls <method> from <path>. Additionally, [message] is passed to the call if set",
 	Action:      call,
 	MinArg:      3,
-	MaxArg:      4,
 }
 
 func call(param []string) {
