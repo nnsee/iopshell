@@ -9,6 +9,7 @@ import (
     "gitlab.com/neonsea/iopshell/internal/cmd"
     "gitlab.com/neonsea/iopshell/internal/connection"
     "gitlab.com/neonsea/iopshell/internal/setting"
+    "gitlab.com/neonsea/iopshell/internal/textmutate"
 )
 
 func filterInput(r rune) (rune, bool) {
@@ -47,8 +48,9 @@ func msgListener() {
     for Sv.Conn.Ws != nil {
         response := Sv.Conn.Recv()
         if response.Jsonrpc != "" {
-            fmt.Println("\nGot", response)
+            fmt.Printf("\n%d: %d\n", response.Id, int(response.Result[0].(float64)))
             if len(response.Result) > 1 {
+                fmt.Println(textmutate.Pprint(response.Result[1]))
                 if key, ok := response.Result[1].(map[string]interface{})["ubus_rpc_session"]; ok {
                     Sv.Conn.Key = key.(string)
                 }
