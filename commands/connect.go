@@ -24,15 +24,15 @@ import (
 	"gitlab.com/neonsea/iopshell/internal/setting"
 )
 
-var Connect = cmd.Command{
+var connect = cmd.Command{
 	Name:        "connect",
 	UsageText:   "connect [host]",
 	Description: "Connects to [host]. If none specified, uses values from config",
-	Action:      connect,
+	Action:      connectRun,
 	MaxArg:      2,
 }
 
-func connect(param []string) {
+func connectRun(param []string) {
 	var addr string
 	if len(param) == 0 {
 		addr = setting.Host
@@ -43,5 +43,5 @@ func connect(param []string) {
 }
 
 func init() {
-	Connect.Register()
+	connect.Register()
 }

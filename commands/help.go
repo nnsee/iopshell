@@ -25,15 +25,15 @@ import (
 	"gitlab.com/neonsea/iopshell/internal/cmd"
 )
 
-var Help = cmd.Command{
+var help = cmd.Command{
 	Name:        "help",
 	UsageText:   "help [command]",
 	Description: "Prints some help info. If [command] is specified, prints info on that",
-	Action:      help,
+	Action:      helpRun,
 	MaxArg:      2,
 }
 
-func help(param []string) {
+func helpRun(param []string) {
 	if len(param) == 0 {
 		fmt.Println("Available commands:")
 		for cmd := range cmd.CommandList {
@@ -52,5 +52,5 @@ func help(param []string) {
 }
 
 func init() {
-	Help.Register()
+	help.Register()
 }

@@ -27,15 +27,15 @@ import (
 	"gitlab.com/neonsea/iopshell/internal/textmutate"
 )
 
-var Call = cmd.Command{
+var call = cmd.Command{
 	Name:        "call",
 	UsageText:   "call <path> <method> [message]",
 	Description: "Calls <method> from <path>. Additionally, [message] is passed to the call if set",
-	Action:      call,
+	Action:      callRun,
 	MinArg:      3,
 }
 
-func call(param []string) {
+func callRun(param []string) {
 	if len(param) == 2 {
 		setting.Vars.Conn.Call(param[0], param[1], make(map[string]interface{}))
 	} else {
@@ -46,5 +46,5 @@ func call(param []string) {
 }
 
 func init() {
-	Call.Register()
+	call.Register()
 }
