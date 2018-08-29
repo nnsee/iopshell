@@ -67,13 +67,14 @@ func msgListener() {
 	for Sv.Conn.Ws != nil {
 		response := Sv.Conn.Recv()
 		if response.Jsonrpc != "" {
-			fmt.Printf("\n%d: %d\n", response.Id, int(response.Result[0].(float64)))
-			if len(response.Result) > 1 {
-				fmt.Println(textmutate.Pprint(response.Result[1]))
-				if key, ok := response.Result[1].(map[string]interface{})["ubus_rpc_session"]; ok {
+			rLen, err, rData := connection.ParseResponse(&response)
+			fmt.Printf("\n%d: %s\n", response.Id, err)
+			if rLen > 1 {
+				fmt.Println(textmutate.Pprint(rData))
+				if key, ok := rData["ubus_rpc_session"]; ok {
 					Sv.Conn.Key = key.(string)
 				}
-				if data, ok := response.Result[1].(map[string]interface{})["data"]; ok {
+				if data, ok := rData["data"]; ok {
 					if user, ok := data.(map[string]interface{})["username"]; ok {
 						Sv.Conn.User = user.(string)
 					}

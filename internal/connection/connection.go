@@ -41,12 +41,6 @@ type Connection struct {
 	Id   int
 }
 
-type response struct {
-	Id      int
-	Result  []interface{}
-	Jsonrpc string
-}
-
 func (c *Connection) Connect(addr string) {
 	u := url.URL{Scheme: "ws", Host: addr, Path: "/"}
 
