@@ -34,6 +34,7 @@ var auth = cmd.Command{
 }
 
 func authRun(param []string) {
+	// Authenticating is just another call
 	setting.Vars.Conn.Call("session", "login", map[string]interface{}{"username": param[0],
 		"password": param[1]})
 }

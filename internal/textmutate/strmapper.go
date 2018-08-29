@@ -29,6 +29,8 @@ type parser struct {
 	Cursor int
 }
 
+// Simply returns whether the current char (or char + offset) is
+// a special char (one specified in SChars)
 func (p *parser) specialChar(offset ...int) bool {
 	cursor := p.Cursor
 	if len(offset) > 0 {
@@ -42,6 +44,7 @@ func (p *parser) specialChar(offset ...int) bool {
 	return false
 }
 
+// Consume a word until a special char and return it
 func (p *parser) word() string {
 	var word strings.Builder
 
@@ -56,6 +59,7 @@ func (p *parser) word() string {
 	return word.String()
 }
 
+// Return what the next special char is
 func (p *parser) peekChar() rune {
 	for i, char := range p.Input[p.Cursor:] {
 		if p.specialChar(i) {
@@ -65,6 +69,10 @@ func (p *parser) peekChar() rune {
 	return 0
 }
 
+// StrToMap takes an input string and creates a map out of it, for use
+// in json requests. For example,
+// "key1:key1-1:value1-1,key1-2:value1-2;key2:value2" returns
+// {"key1": {"key1-1": "value1-1", "key1-2": "value1-2"}, "key2": "value2"}
 func StrToMap(input string) (map[string]interface{}, int) {
 	out := make(map[string]interface{})
 	p := parser{Input: input,

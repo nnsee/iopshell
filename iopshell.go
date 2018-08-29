@@ -20,7 +20,7 @@
 package main
 
 import (
-	_ "gitlab.com/neonsea/iopshell/commands"
+	_ "gitlab.com/neonsea/iopshell/commands" // runs .Register() for each command
 	"gitlab.com/neonsea/iopshell/internal/shell"
 )
 

@@ -39,6 +39,7 @@ func filterInput(r rune) (rune, bool) {
 	return r, true
 }
 
+// Sv is just Vars for easy access
 var Sv = &setting.Vars
 
 func connectionHandler() {
@@ -68,14 +69,16 @@ func msgListener() {
 		response := Sv.Conn.Recv()
 		if response.Jsonrpc != "" {
 			rLen, err, rData := connection.ParseResponse(&response)
-			fmt.Printf("\n%d: %s\n", response.Id, err)
+			fmt.Printf("\n%d: %s\n", response.ID, err)
 			if rLen > 1 {
 				fmt.Println(textmutate.Pprint(rData))
 				if key, ok := rData["ubus_rpc_session"]; ok {
+					// See if we have a session key
 					Sv.Conn.Key = key.(string)
 				}
 				if data, ok := rData["data"]; ok {
 					if user, ok := data.(map[string]interface{})["username"]; ok {
+						// If we just logged in, we get our username
 						Sv.Conn.User = user.(string)
 					}
 				}
@@ -88,6 +91,7 @@ func msgListener() {
 	return
 }
 
+// Shell provides the CLI interface
 func Shell() {
 	l, err := readline.NewEx(&readline.Config{
 		HistoryFile:     "/tmp/iop.tmp",

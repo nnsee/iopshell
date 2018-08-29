@@ -19,16 +19,18 @@
 
 package connection
 
-type response struct {
-	Id      int
+// Response from server is stored in this struct
+type Response struct {
+	ID      int
 	Result  []interface{}
 	Jsonrpc string
 }
 
+// Generate a request interface{} which can be sent to ubus
 func (c *Connection) genUbusRequest(method, path, pmethod string, message map[string]interface{}) interface{} {
 	request := map[string]interface{}{
 		"jsonrpc": "2.0",
-		"id":      c.Id,
+		"id":      c.ID,
 		"method":  method,
 		"params": []interface{}{
 			c.Key,
@@ -41,6 +43,7 @@ func (c *Connection) genUbusRequest(method, path, pmethod string, message map[st
 	return request
 }
 
+// Call a method on the target device
 func (c *Connection) Call(path, method string, message map[string]interface{}) {
 	request := c.genUbusRequest("call", path, method, message)
 	c.Send(request)
@@ -72,9 +75,10 @@ func resultToStr(r int) string {
 	return "Unknown error"
 }
 
-func ParseResponse(r *response) (int, string, map[string]interface{}) {
-	var result string
-	var data map[string]interface{}
+// ParseResponse reads a response and returns data, which is more comfortable to use
+func ParseResponse(r *Response) (int, string, map[string]interface{}) {
+	var result string               // the "error code" should be human-readable
+	var data map[string]interface{} // if the call returned data, map it
 	rLen := len(r.Result)
 	if rLen > 0 {
 		result = resultToStr(int(r.Result[0].(float64)))

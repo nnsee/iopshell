@@ -23,6 +23,8 @@ import (
 	"encoding/json"
 )
 
+// Pprint pretty-prints a json input (interface{})
+// In the future, this should be replaced with a custom function
 func Pprint(input interface{}) string {
 	out, err := json.MarshalIndent(input, "", " ")
 	if err == nil {

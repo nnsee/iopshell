@@ -24,8 +24,10 @@ import (
 	"strings"
 )
 
+// CommandList will map all of the command structs to their names
 var CommandList = make(map[string]Command)
 
+// Command is the actual struct for commands
 type Command struct {
 	Name        string
 	UsageText   string
@@ -35,14 +37,18 @@ type Command struct {
 	MaxArg      int // Same as above
 }
 
+// Register adds command to CommandList. Should be called on init()
 func (cmd *Command) Register() {
 	CommandList[cmd.Name] = *cmd
 }
 
+// Usage prints the command's usage
 func (cmd *Command) Usage() {
 	fmt.Println("Usage:", cmd.UsageText)
 }
 
+// Execute runs the command's specified "Action" function,
+// if MinArg and MaxArg are within acceptable bounds
 func (cmd *Command) Execute(line string) {
 	arg := strings.Split(line, " ")
 	switch {

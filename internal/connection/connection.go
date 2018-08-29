@@ -34,13 +34,15 @@ var dialer = websocket.Dialer{
 	HandshakeTimeout: 15 * time.Second,
 }
 
+// Connection houses the current connection's details
 type Connection struct {
 	Ws   *websocket.Conn
 	Key  string
 	User string
-	Id   int
+	ID   int
 }
 
+// Connect to the specified host
 func (c *Connection) Connect(addr string) {
 	u := url.URL{Scheme: "ws", Host: addr, Path: "/"}
 
@@ -55,6 +57,7 @@ func (c *Connection) Connect(addr string) {
 	}
 }
 
+// Disconnect from the host
 func (c *Connection) Disconnect() {
 	if c.Ws != nil {
 		c.Ws.Close()
@@ -62,18 +65,20 @@ func (c *Connection) Disconnect() {
 	}
 }
 
+// Send the specified interface{} as json
 func (c *Connection) Send(request interface{}) {
 	if c.Ws != nil {
 		c.Ws.WriteJSON(request)
-		c.Id++
+		c.ID++
 	}
 }
 
-func (c *Connection) Recv() response {
+// Recv reads a json response into a response struct
+func (c *Connection) Recv() Response {
 	if c.Ws != nil {
-		var r response
+		var r Response
 		c.Ws.ReadJSON(&r)
 		return r
 	}
-	return response{}
+	return Response{}
 }
