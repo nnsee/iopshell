@@ -20,6 +20,7 @@
 package commands
 
 import (
+	"encoding/json"
 	"strings"
 
 	"gitlab.com/neonsea/iopshell/internal/cmd"
@@ -40,9 +41,19 @@ func callRun(param []string) {
 		setting.Vars.Conn.Call(param[0], param[1], make(map[string]interface{}))
 	} else {
 		message := strings.Join(param[2:], " ")
-		mmap, _ := textmutate.StrToMap(message)
+		mmap := callMessage(message)
 		setting.Vars.Conn.Call(param[0], param[1], mmap)
 	}
+}
+
+func callMessage(message string) map[string]interface{} {
+	out := make(map[string]interface{})
+	err := json.Unmarshal([]byte(message), &out)
+	if err != nil {
+		out, _ := textmutate.StrToMap(message)
+		return out
+	}
+	return out
 }
 
 func init() {

@@ -31,7 +31,7 @@ In __iopshell__, this can be formatted as:
 ```
 key1:key1-1:value1-1,key1-2:value1-2;key2:value2
 ```
-which is a lot more painless to write out.
+which is a lot more painless to write out. Of course, if you prefer, you can still use fully JSON-formatted text - either works.
 
 See the `help` command for further info.
 
