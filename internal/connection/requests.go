@@ -49,6 +49,12 @@ func (c *Connection) Call(path, method string, message map[string]interface{}) {
 	c.Send(request)
 }
 
+// List available namespaces
+func (c *Connection) List(namespace string) {
+	request := c.genUbusRequest("list", namespace, "", make(map[string]interface{}))
+	c.Send(request)
+}
+
 func resultToStr(r int) string {
 	switch r {
 	case 0:
