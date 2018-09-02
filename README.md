@@ -12,7 +12,11 @@ $ go get gitlab.com/neonsea/iopshell
 In the future, prebuilt binaries will be provided.
 
 ## Usage
-Run the program:
+Run a script:
+```sh
+$ $GOBIN/iopshell scripts/example.iop
+```
+Run the program as a shell:
 ```sh
 $ $GOBIN/iopshell
 ```

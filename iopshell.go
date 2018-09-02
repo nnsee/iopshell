@@ -20,10 +20,21 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	_ "gitlab.com/neonsea/iopshell/commands" // runs .Register() for each command
 	"gitlab.com/neonsea/iopshell/internal/shell"
 )
 
 func main() {
-	shell.Shell()
+	if len(os.Args) == 1 {
+		shell.Shell("")
+	} else {
+		err := shell.Shell(os.Args[1])
+		if err != nil {
+			fmt.Printf("Unable to run script '%s'\n", os.Args[1])
+			os.Exit(-1)
+		}
+	}
 }

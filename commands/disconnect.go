@@ -33,7 +33,7 @@ var disconnect = cmd.Command{
 }
 
 func disconnectRun(param []string) {
-	setting.Cmd <- []string{"disconnect"}
+	setting.ConnChannel <- []string{"disconnect"}
 }
 
 func init() {

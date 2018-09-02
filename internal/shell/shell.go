@@ -42,9 +42,9 @@ func filterInput(r rune) (rune, bool) {
 // Sv is just Vars for easy access
 var Sv = &setting.Vars
 
-func connectionHandler() {
+func connListener() {
 	for {
-		cmd := <-setting.Cmd
+		cmd := <-setting.ConnChannel
 		switch cmd[0] {
 		case "connect":
 			Sv.Conn.Connect(cmd[1])
@@ -53,6 +53,16 @@ func connectionHandler() {
 		case "disconnect":
 			Sv.Conn.Disconnect()
 			Sv.UpdatePrompt()
+		}
+	}
+}
+
+func scriptListener() {
+	for {
+		cmd := <-setting.ScriptIn
+		switch cmd[0] {
+		case "run":
+			setting.ScriptRet <- runScript(cmd[1])
 		}
 	}
 }
@@ -92,7 +102,46 @@ func msgListener() {
 }
 
 // Shell provides the CLI interface
-func Shell() {
+func Shell(script string) error {
+
+	Sv.Instance = prepareShell()
+	defer Sv.Instance.Close()
+
+	Sv.UpdatePrompt()
+
+	if script != "" { // run script and exit
+		return runScript(script)
+	}
+
+	Sv.UpdateCompleter(cmd.CommandList)
+
+	for {
+		line, err := Sv.Instance.Readline()
+		if err == io.EOF {
+			break
+		} else if err == readline.ErrInterrupt {
+			continue
+		}
+		parseLine(line)
+	}
+	return nil
+}
+
+func parseLine(line string) {
+	line = strings.TrimSpace(line)
+	command := strings.Split(line, " ")[0]
+	if val, k := cmd.CommandList[command]; k {
+		val.Execute(line)
+	} else if command == "" {
+		return
+	} else {
+		fmt.Printf("Unknown command '%s'\n", line)
+	}
+	return
+}
+
+// PrepareShell sets up some goroutines and the connection handler, returns the Readline instance
+func prepareShell() *readline.Instance {
 	l, err := readline.NewEx(&readline.Config{
 		HistoryFile:     "/tmp/iop.tmp",
 		AutoComplete:    &Sv.Completer,
@@ -106,32 +155,9 @@ func Shell() {
 		panic(err)
 	}
 
-	Sv.Instance = l
 	Sv.Conn = new(connection.Connection)
-	defer l.Close()
-
-	go connectionHandler()
+	go connListener()
+	go scriptListener()
 	go msgParser()
-
-	Sv.UpdatePrompt()
-	Sv.UpdateCompleter(cmd.CommandList)
-
-	for {
-		line, err := l.Readline()
-		if err == io.EOF {
-			break
-		} else if err == readline.ErrInterrupt {
-			continue
-		}
-
-		line = strings.TrimSpace(line)
-		command := strings.Split(line, " ")[0]
-		if val, k := cmd.CommandList[command]; k {
-			val.Execute(line)
-		} else if command == "" {
-			continue
-		} else {
-			fmt.Printf("Unknown command '%s'\n", line)
-		}
-	}
+	return l
 }

@@ -1,0 +1,6 @@
+connect
+wait
+auth user user
+wait
+call uci get config:p910nd
+wait

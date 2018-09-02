@@ -28,8 +28,12 @@ import (
 )
 
 var (
-	// Cmd is a makeshift "API" to avoid imports
-	Cmd = make(chan []string)
+	// ConnChannel listens for connection requests
+	ConnChannel = make(chan []string)
+	// ScriptIn listens for script run requests
+	ScriptIn = make(chan []string)
+	// ScriptRet houses return codes from scripts
+	ScriptRet = make(chan error)
 	// In receives incoming messages
 	In = make(chan interface{})
 	// Out houses outgoing messages
@@ -63,8 +67,10 @@ func (s *ShellVars) UpdatePrompt() {
 			prompt = fmt.Sprintf("\033[32miop\033[0m %s\033[0;1m$\033[0m ", s.Conn.User)
 		}
 	}
-	s.Instance.SetPrompt(prompt)
-	s.Instance.Refresh()
+	if s.Instance != nil {
+		s.Instance.SetPrompt(prompt)
+		s.Instance.Refresh()
+	}
 }
 
 // UpdateCompleter adds commands registered with .Register() to the autocompleter

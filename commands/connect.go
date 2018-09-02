@@ -39,7 +39,7 @@ func connectRun(param []string) {
 	} else {
 		addr = param[0]
 	}
-	setting.Cmd <- []string{"connect", addr}
+	setting.ConnChannel <- []string{"connect", addr}
 }
 
 func init() {
