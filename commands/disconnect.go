@@ -20,8 +20,8 @@
 package commands
 
 import (
-	"gitlab.com/neonsea/iopshell/internal/cmd"
-	"gitlab.com/neonsea/iopshell/internal/setting"
+	"gitlab.com/c-/iopshell/internal/cmd"
+	"gitlab.com/c-/iopshell/internal/setting"
 )
 
 var disconnect = cmd.Command{

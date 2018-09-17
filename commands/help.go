@@ -22,7 +22,7 @@ package commands
 import (
 	"fmt"
 
-	"gitlab.com/neonsea/iopshell/internal/cmd"
+	"gitlab.com/c-/iopshell/internal/cmd"
 )
 
 var help = cmd.Command{

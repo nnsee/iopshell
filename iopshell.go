@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"os"
 
-	_ "gitlab.com/neonsea/iopshell/commands" // runs .Register() for each command
-	"gitlab.com/neonsea/iopshell/internal/shell"
+	_ "gitlab.com/c-/iopshell/commands" // runs .Register() for each command
+	"gitlab.com/c-/iopshell/internal/shell"
 )
 
 func main() {

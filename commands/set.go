@@ -24,8 +24,8 @@ import (
 	"reflect"
 	"strings"
 
-	"gitlab.com/neonsea/iopshell/internal/cmd"
-	"gitlab.com/neonsea/iopshell/internal/setting"
+	"gitlab.com/c-/iopshell/internal/cmd"
+	"gitlab.com/c-/iopshell/internal/setting"
 )
 
 var set = cmd.Command{

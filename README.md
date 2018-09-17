@@ -7,7 +7,7 @@ Before installing __iopshell__, make sure you've installed Go >1.10 from [here](
 ```sh
 $ go get github.com/gorilla/websocket
 $ go get github.com/chzyer/readline
-$ go get gitlab.com/neonsea/iopshell
+$ go get gitlab.com/c-/iopshell
 ```
 In the future, prebuilt binaries will be provided.
 
@@ -40,7 +40,7 @@ which is a lot more painless to write out. Of course, if you prefer, you can sti
 See the `help` command for further info.
 
 ## Reporting problems
-If you encounter an issue, unintended behaviour or a crash, [create a new issue](https://gitlab.com/neonsea/iopshell/issues). Don't forget to include:
+If you encounter an issue, unintended behaviour or a crash, [create a new issue](https://gitlab.com/c-/iopshell/issues). Don't forget to include:
 1. Steps to reproduce the issue
 2. Error log (if any)
 3. Host platform info: Operating system, CPU architecture 
