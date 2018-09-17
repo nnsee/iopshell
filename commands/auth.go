@@ -20,23 +20,38 @@
 package commands
 
 import (
+	"fmt"
+
 	"gitlab.com/neonsea/iopshell/internal/cmd"
 	"gitlab.com/neonsea/iopshell/internal/setting"
 )
 
 var auth = cmd.Command{
 	Name:        "auth",
-	UsageText:   "auth <user> <pass>",
-	Description: "Authenticates as <user> with <pass>",
+	UsageText:   "auth [user pass]",
+	Description: "Authenticates as [user] with [pass]. If none are specified, uses the values from settings.",
 	Action:      authRun,
-	MinArg:      3,
+	MinArg:      1,
 	MaxArg:      3,
 }
 
 func authRun(param []string) {
+	var user, pass string
+	switch len(param) {
+	case 0:
+		user = setting.Vars.Opts.User
+		pass = setting.Vars.Opts.Pass
+	case 1:
+		fmt.Println("Both user and pass need to specified, or none at all.")
+		return
+	case 2:
+		user = param[0]
+		pass = param[1]
+	}
+
 	// Authenticating is just another call
-	setting.Vars.Conn.Call("session", "login", map[string]interface{}{"username": param[0],
-		"password": param[1]})
+	setting.Vars.Conn.Call("session", "login", map[string]interface{}{"username": user,
+		"password": pass})
 }
 
 func init() {

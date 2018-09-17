@@ -35,7 +35,7 @@ var connect = cmd.Command{
 func connectRun(param []string) {
 	var addr string
 	if len(param) == 0 {
-		addr = setting.Host
+		addr = setting.Vars.Opts.Host
 	} else {
 		addr = param[0]
 	}

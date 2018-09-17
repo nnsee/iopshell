@@ -40,16 +40,19 @@ var (
 	Out = make(chan interface{})
 )
 
-var (
-	// Host IP. In reality, this should be read from a file (if it exists)
-	Host = "192.168.1.1"
-)
+type Opts struct {
+	Host    string
+	User    string
+	Pass    string
+	Verbose bool
+}
 
 // ShellVars house some important structs, so they can be accessed elsewhere
 type ShellVars struct {
 	Conn      *connection.Connection
 	Completer readline.PrefixCompleter
 	Instance  *readline.Instance
+	Opts      Opts
 }
 
 // UpdatePrompt refreshes the prompt and sets it according to current status
@@ -89,5 +92,15 @@ func (s *ShellVars) UpdateCompleter(cmdlist map[string]cmd.Command) {
 	}
 }
 
+// Init values for Vars
+func genVars() *ShellVars {
+	var vars ShellVars
+	vars.Opts.Host = "192.168.1.1"
+	vars.Opts.User = "user"
+	vars.Opts.Pass = "user"
+	vars.Opts.Verbose = false
+	return &vars
+}
+
 // Vars is an instance of ShellVars
-var Vars ShellVars
+var Vars = *genVars()
