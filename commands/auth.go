@@ -39,8 +39,8 @@ func authRun(param []string) {
 	var user, pass string
 	switch len(param) {
 	case 0:
-		user = setting.Vars.Opts.User
-		pass = setting.Vars.Opts.Pass
+		user, _ = setting.Vars.GetS("user")
+		pass, _ = setting.Vars.GetS("pass")
 	case 1:
 		fmt.Println("Both user and pass need to specified, or none at all.")
 		return

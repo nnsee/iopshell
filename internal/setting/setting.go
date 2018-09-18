@@ -40,11 +40,10 @@ var (
 	Out = make(chan interface{})
 )
 
-type Opts struct {
-	Host    string
-	User    string
-	Pass    string
-	Verbose bool
+// Opt houses some options
+type Opt struct {
+	Description string
+	Val         interface{}
 }
 
 // ShellVars house some important structs, so they can be accessed elsewhere
@@ -52,7 +51,51 @@ type ShellVars struct {
 	Conn      *connection.Connection
 	Completer readline.PrefixCompleter
 	Instance  *readline.Instance
-	Opts      Opts
+	Opts      map[string]*Opt
+}
+
+// Set sets opt to val
+func (s *ShellVars) Set(opt string, val interface{}) bool {
+	if o, ok := s.Opts[opt]; ok {
+		o.Val = val
+		return true
+	}
+	return false
+}
+
+// Get returns the specified option's pointer, or false if it doesn't exist
+func (s *ShellVars) Get(opt string) (*Opt, bool) {
+	if o, ok := s.Opts[opt]; ok {
+		return o, true
+	}
+	return &Opt{}, false
+}
+
+// GetS returns the specified option's value as a string, or false if it doesn't exist
+func (s *ShellVars) GetS(opt string) (string, bool) {
+	if o, ok := s.Opts[opt]; ok {
+		val, err := o.Val.(string)
+		return val, err
+	}
+	return "", false
+}
+
+// GetB returns the specified option's value as a bool, or false if it doesn't exist
+func (s *ShellVars) GetB(opt string) (bool, bool) {
+	if o, ok := s.Opts[opt]; ok {
+		val, err := o.Val.(bool)
+		return val, err
+	}
+	return false, false
+}
+
+// GetI returns the specified option's value as an int, or false if it doesn't exist
+func (s *ShellVars) GetI(opt string) (int, bool) {
+	if o, ok := s.Opts[opt]; ok {
+		val, err := o.Val.(int)
+		return val, err
+	}
+	return 0, false
 }
 
 // UpdatePrompt refreshes the prompt and sets it according to current status
@@ -95,10 +138,23 @@ func (s *ShellVars) UpdateCompleter(cmdlist map[string]cmd.Command) {
 // Init values for Vars
 func genVars() *ShellVars {
 	var vars ShellVars
-	vars.Opts.Host = "192.168.1.1"
-	vars.Opts.User = "user"
-	vars.Opts.Pass = "user"
-	vars.Opts.Verbose = false
+	vars.Opts = make(map[string]*Opt)
+	vars.Opts["host"] = &Opt{
+		Description: "Host to connect to by default",
+		Val:         "192.168.1.1",
+	}
+	vars.Opts["user"] = &Opt{
+		Description: "User to authenticate as by default",
+		Val:         "user",
+	}
+	vars.Opts["pass"] = &Opt{
+		Description: "Password to authenticate with by default",
+		Val:         "user",
+	}
+	vars.Opts["verbose"] = &Opt{
+		Description: "Print verbose messages",
+		Val:         false,
+	}
 	return &vars
 }
 

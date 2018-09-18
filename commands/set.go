@@ -21,7 +21,6 @@ package commands
 
 import (
 	"fmt"
-	"reflect"
 	"strings"
 
 	"gitlab.com/c-/iopshell/internal/cmd"
@@ -38,11 +37,8 @@ var set = cmd.Command{
 }
 
 func printOpts() {
-	e := reflect.ValueOf(&setting.Vars.Opts).Elem()
-
-	for i := 0; i < e.NumField(); i++ {
-		f := e.Field(i)
-		fmt.Printf("%s: %v\n", e.Type().Field(i).Name, f.Interface())
+	for k, v := range setting.Vars.Opts {
+		fmt.Printf("%s: %v\n", k, v.Val)
 	}
 }
 
@@ -63,35 +59,46 @@ func setRun(param []string) {
 	}
 
 	t, opt := getOption(param[0])
-	if t == reflect.Invalid {
+	if t == "unknown" {
 		fmt.Printf("Unknown setting '%s'\n", param[0])
 		return
 	}
 
 	switch len(param) {
 	case 1:
-		fmt.Printf("%s: %v\n", param[0], opt.Interface())
+		fmt.Printf("%s: %v (%s)\n", param[0], opt.Val, opt.Description)
 	case 2:
 		switch t {
-		case reflect.Bool:
+		case "bool":
 			val, err := toBool(param[1])
 			if err != nil {
 				fmt.Printf("'%s' not a boolean", param[1])
 				return
 			}
-			opt.SetBool(val)
-		case reflect.String:
-			opt.SetString(param[1])
+			setting.Vars.Set(param[0], val)
+		case "string":
+			setting.Vars.Set(param[0], param[1])
 		}
 	}
 }
 
-func getOption(option string) (reflect.Kind, *reflect.Value) {
-	option = strings.Title(strings.ToLower(option))
-	r := reflect.ValueOf(&setting.Vars.Opts)
-	opt := reflect.Indirect(r).FieldByName(option)
-	exp := opt.Kind()
-	return exp, &opt
+func getOption(option string) (string, *setting.Opt) {
+	kind := "unknown"
+	o, ok := setting.Vars.Get(option)
+
+	if !ok {
+		return kind, &setting.Opt{}
+	}
+	switch o.Val.(type) {
+	case int:
+		kind = "int"
+	case bool:
+		kind = "bool"
+	case string:
+		kind = "string"
+	}
+
+	return kind, o
 }
 
 func init() {
