@@ -20,11 +20,13 @@
 package connection
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"gitlab.com/c-/iopshell/internal/textmutate"
 )
 
 var dialer = websocket.Dialer{
@@ -68,6 +70,8 @@ func (c *Connection) Disconnect() {
 // Send the specified interface{} as json
 func (c *Connection) Send(request interface{}) {
 	if c.Ws != nil {
+		s, _ := json.Marshal(request)
+		textmutate.Vprint(fmt.Sprintf("> %s", string(s)))
 		c.Ws.WriteJSON(request)
 		c.ID++
 	}
@@ -78,6 +82,8 @@ func (c *Connection) Recv() Response {
 	if c.Ws != nil {
 		var r Response
 		c.Ws.ReadJSON(&r)
+		s, _ := json.Marshal(r)
+		textmutate.Vprint(fmt.Sprintf("\n< %s", string(s)))
 		return r
 	}
 	return Response{}

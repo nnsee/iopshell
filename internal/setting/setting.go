@@ -25,6 +25,7 @@ import (
 	"github.com/chzyer/readline"
 	"gitlab.com/c-/iopshell/internal/cmd"
 	"gitlab.com/c-/iopshell/internal/connection"
+	"gitlab.com/c-/iopshell/internal/textmutate"
 )
 
 var (
@@ -58,6 +59,9 @@ type ShellVars struct {
 func (s *ShellVars) Set(opt string, val interface{}) bool {
 	if o, ok := s.Opts[opt]; ok {
 		o.Val = val
+		if opt == "verbose" { // there's got to be a better way to do this
+			textmutate.Verbose = val.(bool)
+		}
 		return true
 	}
 	return false
@@ -153,7 +157,7 @@ func genVars() *ShellVars {
 	}
 	vars.Opts["verbose"] = &Opt{
 		Description: "Print verbose messages",
-		Val:         false,
+		Val:         textmutate.Verbose,
 	}
 	return &vars
 }

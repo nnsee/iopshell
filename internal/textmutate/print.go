@@ -21,7 +21,10 @@ package textmutate
 
 import (
 	"encoding/json"
+	"fmt"
 )
+
+var Verbose = false
 
 // Pprint pretty-prints a json input (interface{})
 // In the future, this should be replaced with a custom function
@@ -31,4 +34,11 @@ func Pprint(input interface{}) string {
 		return string(out)
 	}
 	return ""
+}
+
+// Vprint prints stuff if verbose is enabled
+func Vprint(input string) {
+	if Verbose {
+		fmt.Println(input)
+	}
 }

@@ -21,8 +21,9 @@ package shell
 
 import (
 	"bufio"
-	"fmt"
 	"os"
+
+	"gitlab.com/c-/iopshell/internal/textmutate"
 )
 
 // RunScript opens a .iop script, parses it and returns an error
@@ -35,7 +36,7 @@ func runScript(path string) error {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		fmt.Println("Executing:", scanner.Text())
+		textmutate.Vprint(scanner.Text())
 		parseLine(scanner.Text())
 	}
 
