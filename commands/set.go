@@ -21,6 +21,7 @@ package commands
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"gitlab.com/c-/iopshell/internal/cmd"
@@ -69,6 +70,13 @@ func setRun(param []string) {
 		fmt.Printf("%s: %v (%s)\n", param[0], opt.Val, opt.Description)
 	case 2:
 		switch t {
+		case "float64":
+			val, err := strconv.ParseFloat(param[1], 64)
+			if err != nil {
+				fmt.Printf("'%s' not a float", param[1])
+				return
+			}
+			setting.Vars.Set(param[0], val)
 		case "bool":
 			val, err := toBool(param[1])
 			if err != nil {
@@ -90,8 +98,8 @@ func getOption(option string) (string, *setting.Opt) {
 		return kind, &setting.Opt{}
 	}
 	switch o.Val.(type) {
-	case int:
-		kind = "int"
+	case float64:
+		kind = "float64"
 	case bool:
 		kind = "bool"
 	case string:

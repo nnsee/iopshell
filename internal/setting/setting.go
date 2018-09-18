@@ -93,10 +93,10 @@ func (s *ShellVars) GetB(opt string) (bool, bool) {
 	return false, false
 }
 
-// GetI returns the specified option's value as an int, or false if it doesn't exist
-func (s *ShellVars) GetI(opt string) (int, bool) {
+// GetF returns the specified option's value as an float64, or false if it doesn't exist
+func (s *ShellVars) GetF(opt string) (float64, bool) {
 	if o, ok := s.Opts[opt]; ok {
-		val, err := o.Val.(int)
+		val, err := o.Val.(float64)
 		return val, err
 	}
 	return 0, false
