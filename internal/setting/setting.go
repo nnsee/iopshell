@@ -159,6 +159,10 @@ func genVars() *ShellVars {
 		Description: "Print verbose messages",
 		Val:         textmutate.Verbose,
 	}
+	vars.Opts["script_delay"] = &Opt{
+		Description: "Number of seconds to wait between each command when running a script",
+		Val:         float64(0),
+	}
 	return &vars
 }
 

@@ -22,7 +22,9 @@ package shell
 import (
 	"bufio"
 	"os"
+	"time"
 
+	"gitlab.com/c-/iopshell/internal/setting"
 	"gitlab.com/c-/iopshell/internal/textmutate"
 )
 
@@ -38,6 +40,8 @@ func runScript(path string) error {
 	for scanner.Scan() {
 		textmutate.Vprint(scanner.Text())
 		parseLine(scanner.Text())
+		del, _ := setting.Vars.GetF("script_delay")
+		time.Sleep(time.Duration(del) * time.Second)
 	}
 
 	if err := scanner.Err(); err != nil {
