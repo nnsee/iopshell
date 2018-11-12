@@ -109,6 +109,11 @@ func Shell(script string) error {
 
 	Sv.UpdatePrompt()
 
+	rc := GetRCFile()
+	if rc != "" {
+		runScript(rc)
+	}
+
 	if script != "" { // run script and exit
 		return runScript(script)
 	}

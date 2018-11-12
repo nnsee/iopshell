@@ -22,11 +22,25 @@ package shell
 import (
 	"bufio"
 	"os"
+	"os/user"
 	"time"
 
 	"gitlab.com/c-/iopshell/internal/setting"
 	"gitlab.com/c-/iopshell/internal/textmutate"
 )
+
+// GetRCFile fetches the absolute .ioprc file location
+func GetRCFile() string {
+	usr, err := user.Current()
+	if err != nil {
+		return ""
+	}
+	loc := usr.HomeDir + "/.ioprc"
+	if _, err := os.Stat(loc); !os.IsNotExist(err) {
+		return loc
+	}
+	return ""
+}
 
 // RunScript opens a .iop script, parses it and returns an error
 func runScript(path string) error {

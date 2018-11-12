@@ -39,6 +39,21 @@ which is a lot more painless to write out. Of course, if you prefer, you can sti
 
 See the `help` command for further info.
 
+## Setting options
+There are multiple options which can be seen and set with the `set` command. Using `set` with no arguments will simply print all editable options and their current values. Use set with arguments to change a value:
+```
+iop$ set verbose 1
+```
+Custom values will be lost after closing the program. To set permanent custom values, create a `.ioprc` file in your home directory, and include commands to be run on launch. An example `.ioprc` might look something like this:
+```
+set host 192.168.42.1
+set user admin
+set pass admin
+connect
+wait
+auth
+```
+
 ## Reporting problems
 If you encounter an issue, unintended behaviour or a crash, [create a new issue](https://gitlab.com/c-/iopshell/issues). Don't forget to include:
 1. Steps to reproduce the issue
