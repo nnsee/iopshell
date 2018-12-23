@@ -94,8 +94,6 @@ func msgListener() {
 				}
 			}
 			Sv.UpdatePrompt()
-		} else {
-			return
 		}
 	}
 	return

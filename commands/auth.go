@@ -49,9 +49,22 @@ func authRun(param []string) {
 		pass = param[1]
 	}
 
-	// Authenticating is just another call
-	setting.Vars.Conn.Call("session", "login", map[string]interface{}{"username": user,
-		"password": pass})
+	// Authenticating is just another call (but key needs to be zeroed out)
+	request := map[string]interface{}{
+		"jsonrpc": "2.0",
+		"id":      setting.Vars.Conn.ID,
+		"method":  "call",
+		"params": []interface{}{
+			"00000000000000000000000000000000",
+			"session",
+			"login",
+			map[string]interface{}{
+				"username": user,
+				"password": pass,
+			},
+		},
+	}
+	setting.Vars.Conn.Send(request)
 }
 
 func init() {
