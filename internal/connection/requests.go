@@ -44,15 +44,15 @@ func (c *Connection) genUbusRequest(method, path, pmethod string, message map[st
 }
 
 // Call a method on the target device
-func (c *Connection) Call(path, method string, message map[string]interface{}) {
+func (c *Connection) Call(path, method string, message map[string]interface{}) int {
 	request := c.genUbusRequest("call", path, method, message)
-	c.Send(request)
+	return c.Send(request)
 }
 
 // List available namespaces
-func (c *Connection) List(namespace string) {
+func (c *Connection) List(namespace string) int {
 	request := c.genUbusRequest("list", namespace, "", make(map[string]interface{}))
-	c.Send(request)
+	return c.Send(request)
 }
 
 func resultToStr(r int) string {

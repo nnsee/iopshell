@@ -39,6 +39,10 @@ var (
 	In = make(chan interface{})
 	// Out houses outgoing messages
 	Out = make(chan interface{})
+	// PassBack returns a response to a command if requested
+	PassBack = make(chan interface{})
+	// PassBackID houses ID waiting for a response
+	PassBackID = -1
 )
 
 // Opt houses some options
@@ -100,6 +104,16 @@ func (s *ShellVars) GetF(opt string) (float64, bool) {
 		return val, err
 	}
 	return 0, false
+}
+
+// GetResponse can be used by commands to get a response
+func GetResponse(id int) interface{} {
+	if id == -1 {
+		// call failed
+		return nil
+	}
+	PassBackID = id
+	return <-PassBack
 }
 
 // UpdatePrompt refreshes the prompt and sets it according to current status
