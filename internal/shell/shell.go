@@ -74,7 +74,7 @@ func msgParser() {
 	}
 }
 
-func passResponse(res interface{}) {
+func passResponse(res connection.Response) {
 	setting.PassBack <- res
 	setting.PassBackID = -1
 }
