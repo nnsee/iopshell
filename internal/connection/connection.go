@@ -68,13 +68,15 @@ func (c *Connection) Disconnect() {
 }
 
 // Send the specified interface{} as json
-func (c *Connection) Send(request interface{}) {
+func (c *Connection) Send(request interface{}) int {
 	if c.Ws != nil {
 		s, _ := json.Marshal(request)
 		textmutate.Vprint(fmt.Sprintf("> %s", string(s)))
 		c.Ws.WriteJSON(request)
 		c.ID++
+		return c.ID - 1
 	}
+	return -1
 }
 
 // Recv reads a json response into a response struct

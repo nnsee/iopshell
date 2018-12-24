@@ -74,11 +74,19 @@ func msgParser() {
 	}
 }
 
+func passResponse(res connection.Response) {
+	setting.PassBack <- res
+	setting.PassBackID = -1
+}
+
 func msgListener() {
 	for Sv.Conn.Ws != nil {
 		response := Sv.Conn.Recv()
 		if response.Jsonrpc != "" {
 			rLen, err, rData := connection.ParseResponse(&response)
+			if response.ID == setting.PassBackID {
+				passResponse(response)
+			}
 			fmt.Printf("\n%d: %s\n", response.ID, err)
 			if rLen > 1 {
 				fmt.Println(textmutate.Pprint(rData))
@@ -95,6 +103,7 @@ func msgListener() {
 			}
 			Sv.UpdatePrompt()
 		}
+
 	}
 	return
 }

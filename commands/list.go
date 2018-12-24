@@ -20,6 +20,8 @@
 package commands
 
 import (
+	"gitlab.com/c-/iopshell/internal/connection"
+
 	"gitlab.com/c-/iopshell/internal/cmd"
 	"gitlab.com/c-/iopshell/internal/setting"
 )
@@ -36,7 +38,9 @@ func listRun(param []string) {
 	if len(param) == 1 {
 		setting.Vars.Conn.List(param[0])
 	} else {
-		setting.Vars.Conn.List("*")
+		resp := setting.GetResponse(setting.Vars.Conn.List("*"))
+		_, _, rData := connection.ParseResponse(&resp)
+		setting.Vars.UpdateCallCompleter(rData)
 	}
 }
 
