@@ -128,14 +128,9 @@ func (s *ShellVars) UpdateCompleter(cmdlist map[string]cmd.Command) {
 	s.Completer = *readline.NewPrefixCompleter()
 	s.Completer.SetChildren(*new([]readline.PrefixCompleterInterface))
 
-	commands := make([]string, len(cmdlist))
-	i := 0
-	for c := range cmdlist {
-		commands[i] = c
-		i++
-	}
-	for _, c := range commands {
-		s.Completer.Children = append(s.Completer.Children, readline.PcItem(c))
+	for _, c := range cmdlist {
+		s.Completer.Children = append(s.Completer.Children,
+			readline.PcItem(c.Name))
 	}
 }
 
