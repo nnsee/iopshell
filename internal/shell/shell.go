@@ -114,8 +114,6 @@ func Shell(script string) error {
 	Sv.Instance = prepareShell()
 	defer Sv.Instance.Close()
 
-	Sv.UpdatePrompt()
-
 	rc := GetRCFile()
 	if rc != "" {
 		runScript(rc)
@@ -124,8 +122,6 @@ func Shell(script string) error {
 	if script != "" { // run script and exit
 		return runScript(script)
 	}
-
-	Sv.UpdateCompleter(cmd.CommandList)
 
 	for {
 		line, err := Sv.Instance.Readline()
@@ -171,5 +167,9 @@ func prepareShell() *readline.Instance {
 	go connListener()
 	go scriptListener()
 	go msgParser()
+
+	Sv.UpdatePrompt()
+	Sv.UpdateCompleter(cmd.CommandList)
+
 	return l
 }
