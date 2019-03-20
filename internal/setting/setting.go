@@ -120,10 +120,9 @@ func GetResponse(id int) connection.Response {
 // UpdatePrompt refreshes the prompt and sets it according to current status
 func (s *ShellVars) UpdatePrompt() {
 	var prompt string
-	if s.Conn.Ws == nil {
-		// Not connected
-		prompt = "\033[91miop\033[0;1m$\033[0m "
-	} else {
+	prompt = "\033[91miop\033[0;1m$\033[0m "
+
+	if s.Conn.Ws != nil {
 		if s.Conn.User == "" {
 			// Connected but not authenticated
 			prompt = "\033[32miop\033[0;1m$\033[0m "
@@ -132,6 +131,7 @@ func (s *ShellVars) UpdatePrompt() {
 			prompt = fmt.Sprintf("\033[32miop\033[0m %s\033[0;1m$\033[0m ", s.Conn.User)
 		}
 	}
+
 	if s.Instance != nil {
 		s.Instance.SetPrompt(prompt)
 		s.Instance.Refresh()
