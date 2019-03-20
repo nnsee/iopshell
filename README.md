@@ -1,6 +1,6 @@
 # iopshell
 
-__iopshell__ is a client written in Go, which allows the user to communicate with Inteno's IOPSYS devices, or other OpenWRT devices using the `owsd` server. Its primary goals are usability and to have a layer of abstraction handling all communications between the user and the device. __iopshell__ is also capable of executing simple scripts, which can be used to automate certain tasks.
+__iopshell__ is a client written in Go, which allows the user to communicate with Inteno's IOPSYS devices, or other OpenWRT devices using the `owsd` server. Its primary goals are usability and to have a layer of abstraction handling all communications between the user and the device. __iopshell__ is also capable of executing simple scripts, which can be used to automate certain tasks. __iopshell__ is also capable of connecting locally, [for example on the router itself](https://i.imgur.com/xhoDzNL.png).
 
 ## Installation
 Before installing __iopshell__, make sure you've installed Go >1.10 from [here](https://golang.org/dl/) or using your distribution's package manager, and your `$GOPATH` and `$GOBIN` are properly set. You can then `go get` the dependencies and __iopshell__:
