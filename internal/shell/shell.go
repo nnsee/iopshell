@@ -93,11 +93,11 @@ func msgListener() {
 				if key, ok := rData["ubus_rpc_session"]; ok {
 					// See if we have a session key
 					Sv.Conn.Key = key.(string)
-				}
-				if data, ok := rData["data"]; ok {
-					if user, ok := data.(map[string]interface{})["username"]; ok {
-						// If we just logged in, we get our username
-						Sv.Conn.User = user.(string)
+					if data, ok := rData["data"]; ok {
+						if user, ok := data.(map[string]interface{})["username"]; ok {
+							// If we just logged in, we get our username
+							Sv.Conn.User = user.(string)
+						}
 					}
 				}
 			}
