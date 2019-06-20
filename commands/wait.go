@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"time"
 
-	"gitlab.com/c-/iopshell/internal/cmd"
+	"github.com/neonsea/iopshell/internal/cmd"
 )
 
 var wait = cmd.Command{

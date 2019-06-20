@@ -25,10 +25,10 @@ import (
 	"strings"
 
 	"github.com/chzyer/readline"
-	"gitlab.com/c-/iopshell/internal/cmd"
-	"gitlab.com/c-/iopshell/internal/connection"
-	"gitlab.com/c-/iopshell/internal/setting"
-	"gitlab.com/c-/iopshell/internal/textmutate"
+	"github.com/neonsea/iopshell/internal/cmd"
+	"github.com/neonsea/iopshell/internal/connection"
+	"github.com/neonsea/iopshell/internal/setting"
+	"github.com/neonsea/iopshell/internal/textmutate"
 )
 
 func filterInput(r rune) (rune, bool) {

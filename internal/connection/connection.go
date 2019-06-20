@@ -26,7 +26,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"gitlab.com/c-/iopshell/internal/textmutate"
+	"github.com/neonsea/iopshell/internal/textmutate"
 )
 
 var dialer = websocket.Dialer{

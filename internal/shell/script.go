@@ -25,8 +25,8 @@ import (
 	"os/user"
 	"time"
 
-	"gitlab.com/c-/iopshell/internal/setting"
-	"gitlab.com/c-/iopshell/internal/textmutate"
+	"github.com/neonsea/iopshell/internal/setting"
+	"github.com/neonsea/iopshell/internal/textmutate"
 )
 
 // GetRCFile fetches the absolute .ioprc file location

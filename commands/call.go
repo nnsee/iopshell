@@ -23,9 +23,9 @@ import (
 	"encoding/json"
 	"strings"
 
-	"gitlab.com/c-/iopshell/internal/cmd"
-	"gitlab.com/c-/iopshell/internal/setting"
-	"gitlab.com/c-/iopshell/internal/textmutate"
+	"github.com/neonsea/iopshell/internal/cmd"
+	"github.com/neonsea/iopshell/internal/setting"
+	"github.com/neonsea/iopshell/internal/textmutate"
 )
 
 var call = cmd.Command{

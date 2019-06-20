@@ -20,10 +20,10 @@
 package commands
 
 import (
-	"gitlab.com/c-/iopshell/internal/connection"
+	"github.com/neonsea/iopshell/internal/connection"
 
-	"gitlab.com/c-/iopshell/internal/cmd"
-	"gitlab.com/c-/iopshell/internal/setting"
+	"github.com/neonsea/iopshell/internal/cmd"
+	"github.com/neonsea/iopshell/internal/setting"
 )
 
 var list = cmd.Command{

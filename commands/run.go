@@ -22,8 +22,8 @@ package commands
 import (
 	"fmt"
 
-	"gitlab.com/c-/iopshell/internal/cmd"
-	"gitlab.com/c-/iopshell/internal/setting"
+	"github.com/neonsea/iopshell/internal/cmd"
+	"github.com/neonsea/iopshell/internal/setting"
 )
 
 var run = cmd.Command{
