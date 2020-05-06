@@ -27,12 +27,13 @@ import (
 )
 
 var auth = cmd.Command{
-	Name:        "auth",
-	UsageText:   "auth [user pass]",
-	Description: "Authenticates as [user] with [pass]. If none are specified, uses the values from settings.",
-	Action:      authRun,
-	MinArg:      1,
-	MaxArg:      3,
+	Name:      "auth",
+	UsageText: "auth [user [pass]]",
+	Description: "Authenticates as [user] with [pass]. If none are specified, uses the values from settings.\n" +
+		"\t\tIf only the user is specified, the shell prompts for a password.",
+	Action: authRun,
+	MinArg: 1,
+	MaxArg: 3,
 }
 
 func authRun(param []string) {
@@ -42,8 +43,13 @@ func authRun(param []string) {
 		user, _ = setting.Vars.GetS("user")
 		pass, _ = setting.Vars.GetS("pass")
 	case 1:
-		fmt.Println("Both user and pass need to specified, or none at all.")
-		return
+		user = param[0]
+		passb, err := setting.Vars.Instance.ReadPassword("Password: ")
+		if err != nil {
+			fmt.Println("Unable to read password")
+			return
+		}
+		pass = string(passb)
 	case 2:
 		user = param[0]
 		pass = param[1]
