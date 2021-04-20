@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2021 Rasmus Moorats (neonsea)
 
    This file is part of iopshell.
 
@@ -20,16 +20,24 @@
 package textmutate
 
 import (
-	"encoding/json"
 	"fmt"
+
+	"github.com/TylerBrock/colorjson"
 )
 
-var Verbose = false
+var (
+	Verbose   = false
+	formatter = colorjson.NewFormatter()
+)
+
+func init() {
+	formatter.Indent = 2
+}
 
 // Pprint pretty-prints a json input (interface{})
 // In the future, this should be replaced with a custom function
 func Pprint(input interface{}) string {
-	out, err := json.MarshalIndent(input, "", " ")
+	out, err := formatter.Marshal(input)
 	if err == nil {
 		return string(out)
 	}
