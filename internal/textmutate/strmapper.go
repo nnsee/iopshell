@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2021 Rasmus Moorats (neonsea)
 
    This file is part of iopshell.
 
@@ -17,6 +17,8 @@
    along with iopshell. If not, see <https://www.gnu.org/licenses/>.
 */
 
+// If you do not wish to inflict pain upon yourself, turn back now.
+
 package textmutate
 
 import (
@@ -24,9 +26,34 @@ import (
 )
 
 type parser struct {
-	Input  string
-	SChars []rune
-	Cursor int
+	Input   string
+	SChars  []rune
+	Cursor  int
+	escaped []int
+}
+
+// Is the character specified at `index` escaped?
+func (p *parser) isEscaped(index int) bool {
+	for _, i := range p.escaped {
+		if i == index {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Preproccess escaped characters and populate the
+// `escaped` slice
+func (p *parser) processEscapes() {
+	cursor := 0
+	for cursor < len(p.Input) {
+		if p.Input[cursor] == '\\' {
+			p.escaped = append(p.escaped, cursor+1)
+			cursor++
+		}
+		cursor++
+	}
 }
 
 // Simply returns whether the current char (or char + offset) is
@@ -41,6 +68,7 @@ func (p *parser) specialChar(offset ...int) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -49,11 +77,36 @@ func (p *parser) word() string {
 	var word strings.Builder
 
 	for p.Cursor < len(p.Input) {
-		if p.specialChar() {
+		if p.Input[p.Cursor] == '\\' && !p.isEscaped(p.Cursor) {
 			p.Cursor++
-			return word.String()
+			continue
 		}
-		word.WriteByte(p.Input[p.Cursor])
+
+		if p.isEscaped(p.Cursor) {
+			switch c := (p.Input[p.Cursor]); c {
+			case 'a':
+				word.WriteByte('\a')
+			case 'b':
+				word.WriteByte('\b')
+			case 'f':
+				word.WriteByte('\f')
+			case 'n':
+				word.WriteByte('\n')
+			case 'r':
+				word.WriteByte('\r')
+			case 't':
+				word.WriteByte('\t')
+			case 'v':
+				word.WriteByte('\v')
+			case ':', ';', ',', '\\':
+				word.WriteByte(c)
+			}
+		} else if p.specialChar() {
+			p.Cursor++
+			break
+		} else {
+			word.WriteByte(p.Input[p.Cursor])
+		}
 		p.Cursor++
 	}
 	return word.String()
@@ -62,7 +115,7 @@ func (p *parser) word() string {
 // Return what the next special char is
 func (p *parser) peekChar() rune {
 	for i, char := range p.Input[p.Cursor:] {
-		if p.specialChar(i) {
+		if p.specialChar(i) && !p.isEscaped(i+p.Cursor) {
 			return char
 		}
 	}
@@ -77,8 +130,12 @@ func StrToMap(input string) (map[string]interface{}, int) {
 	out := make(map[string]interface{})
 	p := parser{Input: input,
 		SChars: []rune{':', ';', ','}}
+
+	p.processEscapes()
+
 	for key := p.word(); key != ""; key = p.word() {
-		switch char := p.peekChar(); char {
+		char := p.peekChar()
+		switch char {
 		case ':':
 			newGen, cur := StrToMap(p.Input[p.Cursor:])
 			out[key] = newGen
@@ -90,8 +147,7 @@ func StrToMap(input string) (map[string]interface{}, int) {
 			return out, p.Cursor
 		default:
 			out[key] = p.word()
-			break
 		}
 	}
-	return out, len(input)
+	return out, p.Cursor
 }
