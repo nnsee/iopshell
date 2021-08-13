@@ -46,7 +46,7 @@ There are multiple options which can be seen and set with the `set` command. Usi
 ```
 iop$ set verbose 1
 ```
-Custom values will be lost after closing the program. To set permanent custom values, create a `.ioprc` file in your home directory, and include commands to be run on launch. An example `.ioprc` might look something like this:
+Custom values will be lost after closing the program. To set permanent custom values, create a `init.iop` file in your iopshell config directory (Linux: `$HOME/.config/iopshell/`, Windows: `C:\Users\%USER%\AppData\Roaming\iopshell\`, MacOS: `$HOME/Library/Application Support/iopshell/`), and include commands to be run on launch. An example `init.iop` might look something like this:
 ```
 set host 192.168.42.1
 set user admin

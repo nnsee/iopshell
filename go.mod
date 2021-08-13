@@ -10,5 +10,6 @@ require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/hokaccha/go-prettyjson v0.0.0-20210113012101-fb4e108d2519 // indirect
+	github.com/kirsle/configdir v0.0.0-20170128060238-e45d2f54772f
 	golang.org/x/sys v0.0.0-20210419170143-37df388d1f33 // indirect
 )

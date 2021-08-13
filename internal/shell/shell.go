@@ -105,7 +105,6 @@ func msgListener() {
 		}
 
 	}
-	return
 }
 
 // Shell provides the CLI interface
@@ -147,13 +146,12 @@ func parseLine(line string) {
 	} else {
 		fmt.Printf("Unknown command '%s'\n", line)
 	}
-	return
 }
 
 // PrepareShell sets up some goroutines and the connection handler, returns the Readline instance
 func prepareShell() *readline.Instance {
 	l, err := readline.NewEx(&readline.Config{
-		HistoryFile:     "/tmp/iop.tmp",
+		HistoryFile:     GetHistoryFile(),
 		AutoComplete:    &Sv.Completer,
 		InterruptPrompt: "^C",
 		EOFPrompt:       "^D",

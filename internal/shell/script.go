@@ -22,24 +22,36 @@ package shell
 import (
 	"bufio"
 	"os"
-	"os/user"
+	"path/filepath"
 	"time"
+
+	"github.com/kirsle/configdir"
 
 	"github.com/neonsea/iopshell/internal/setting"
 	"github.com/neonsea/iopshell/internal/textmutate"
 )
 
-// GetRCFile fetches the absolute .ioprc file location
+// GetRCFile fetches the absolute init.iop file location
 func GetRCFile() string {
-	usr, err := user.Current()
+	configPath := configdir.LocalConfig("iopshell")
+	initFile := filepath.Join(configPath, "init.iop")
+
+	if _, err := os.Stat(initFile); !os.IsNotExist(err) {
+		return initFile
+	}
+
+	return ""
+}
+
+// GetHistoryFile fetches the absolute location for the shell's history buffer
+func GetHistoryFile() string {
+	cachePath := configdir.LocalCache("iopshell")
+	err := configdir.MakePath(cachePath) // Ensure it exists.
 	if err != nil {
 		return ""
 	}
-	loc := usr.HomeDir + "/.ioprc"
-	if _, err := os.Stat(loc); !os.IsNotExist(err) {
-		return loc
-	}
-	return ""
+
+	return filepath.Join(cachePath, "history")
 }
 
 // RunScript opens a .iop script, parses it and returns an error
