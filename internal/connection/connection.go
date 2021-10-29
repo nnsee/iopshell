@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2018 Rasmus Moorats (nns)
 
    This file is part of iopshell.
 
@@ -26,7 +26,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/neonsea/iopshell/internal/textmutate"
+	"github.com/nnsee/iopshell/internal/textmutate"
 )
 
 var dialer = websocket.Dialer{

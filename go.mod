@@ -1,4 +1,4 @@
-module github.com/neonsea/iopshell
+module github.com/nnsee/iopshell
 
 go 1.16
 

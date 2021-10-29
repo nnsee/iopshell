@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2021 Rasmus Moorats (neonsea)
+   Copyright (c) 2021 Rasmus Moorats (nns)
 
    This file is part of iopshell.
 

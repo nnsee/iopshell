@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2018 Rasmus Moorats (nns)
 
    This file is part of iopshell.
 
@@ -27,8 +27,8 @@ import (
 
 	"github.com/kirsle/configdir"
 
-	"github.com/neonsea/iopshell/internal/setting"
-	"github.com/neonsea/iopshell/internal/textmutate"
+	"github.com/nnsee/iopshell/internal/setting"
+	"github.com/nnsee/iopshell/internal/textmutate"
 )
 
 // GetRCFile fetches the absolute init.iop file location

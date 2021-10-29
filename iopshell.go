@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2018 Rasmus Moorats (nns)
 
    This file is part of iopshell.
 
@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"os"
 
-	_ "github.com/neonsea/iopshell/commands" // runs .Register() for each command
-	"github.com/neonsea/iopshell/internal/shell"
+	_ "github.com/nnsee/iopshell/commands" // runs .Register() for each command
+	"github.com/nnsee/iopshell/internal/shell"
 )
 
 func main() {

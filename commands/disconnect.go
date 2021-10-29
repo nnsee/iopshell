@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2018 Rasmus Moorats (nns)
 
    This file is part of iopshell.
 
@@ -20,8 +20,8 @@
 package commands
 
 import (
-	"github.com/neonsea/iopshell/internal/cmd"
-	"github.com/neonsea/iopshell/internal/setting"
+	"github.com/nnsee/iopshell/internal/cmd"
+	"github.com/nnsee/iopshell/internal/setting"
 )
 
 var disconnect = cmd.Command{

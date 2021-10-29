@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2018 Rasmus Moorats (nns)
 
    This file is part of iopshell.
 
@@ -23,9 +23,9 @@ import (
 	"fmt"
 
 	"github.com/chzyer/readline"
-	"github.com/neonsea/iopshell/internal/cmd"
-	"github.com/neonsea/iopshell/internal/connection"
-	"github.com/neonsea/iopshell/internal/textmutate"
+	"github.com/nnsee/iopshell/internal/cmd"
+	"github.com/nnsee/iopshell/internal/connection"
+	"github.com/nnsee/iopshell/internal/textmutate"
 )
 
 var (

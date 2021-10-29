@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2018 Rasmus Moorats (neonsea)
+   Copyright (c) 2018 Rasmus Moorats (nns)
 
    This file is part of iopshell.
 
@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/neonsea/iopshell/internal/cmd"
+	"github.com/nnsee/iopshell/internal/cmd"
 )
 
 var wait = cmd.Command{
